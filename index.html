@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+    <div aria-live="polite" aria-atomic="true" style="position: relative;">
+        <div style="position: absolute; top: 20px; right: 20px;" id="toast-container">
+        </div>
+    </div>
+    <section class="container pb-5 pt-3 numberGuessingBox">
+        <div class="img-container">
+            <img class="center mb-3" src="img/chips.png" width="auto" height="150">
+            <img class="center mb-3" src="img/gambler.png" width="auto" height="150">
+            <img class="center mb-3" src="img/cards.png" width="auto" height="150">
+        </div>
+
+        <div class="row">
+            <div class="col-5 left_handSide px-5">
+                <h1 style="text-align: center;">Guesses History</h1>
+                <div class="row box-1 py-4 px-4" id="guessHistory">
+
+                </div>
+                <h1 style="text-align: center;">Previous Round</h1>
+                <div class="row box-3 py-2 px-4" id="previousRound">
+
+                </div>
+                <h1 style="text-align: center;">Top 3 Best Records</h1>
+                <div class="row box-2 py-4 px-4" id="ranking">
+
+                </div>
+
+            </div>
+            <div class="col-7 right_handSide px-5">
+                <button onclick="startGame()" class="btn btn-light" id="startGameBtn">New Game!</button>
+
+                <canvas id="myCanvas"></canvas>
+                <!-- <div id="inputDiv">
+                    <div class="form customForm py-5">
+                        <input type="number" class="form-control" id="guessInput" placeholder="Enter your guess here:" autofocus="autofocus" required>
+                        <div class="submitBtn">
+                            <button type="button" class="btn btn-primary mt-4" onclick="guessSubmit()" id="guessBtn">Guess</button>
+                            <button type="button" class="btn btn-danger mt-4" onclick="reset()" id=resetBtn>Reset</button>
+                        </div>
+                    </div>
+
+                    <div class="result my-3">
+                        <div>Guess Remaining:
+                            <span id="guessRemaining"></span>
+                        </div>
+                        <div>Time Remaining:
+                            <div id="secondRemaining">s</div>
+                        </div>
+                    </div>
+                </div> -->
+
+
+            </div>
+        </div>
+    </section>
+
+    <script src="js/script.js"></script>
+</body>
+
+</html>
