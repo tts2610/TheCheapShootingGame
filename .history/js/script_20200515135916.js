@@ -352,6 +352,7 @@ let update = function() {
         heroX -= 5;
     }
     if (68 in keysDown) { // Player is holding right key
+        alert("aaaa")
         heroX += 5;
     }
 

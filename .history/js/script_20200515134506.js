@@ -126,7 +126,7 @@ function guessSubmit() {
 // RESET BUTTON PRESSED
 function reset() {
     resetToDefault();
-    // enableOrDisableBtn();
+    enableOrDisableBtn();
     displayDiv();
 }
 
@@ -161,13 +161,12 @@ function displayDiv() {
 }
 
 function resetToDefault() {
-    // clearInterval(timer);
-    // guess = 5;
-    // second = 20;
-    // historyBox = [];
-    // guessHistory.innerHTML = "";
-    // randomNumber = Math.floor(Math.random() * 100) + 1;
-    canvas.innerHTML = '';
+    clearInterval(timer);
+    guess = 5;
+    second = 20;
+    historyBox = [];
+    guessHistory.innerHTML = "";
+    randomNumber = Math.floor(Math.random() * 100) + 1;
 }
 
 // function timecounting() {
@@ -337,21 +336,20 @@ function setupKeyboardListeners() {
  */
 let update = function() {
     // Update the time.
-    if (elapsedTime == SECONDS_PER_ROUND) { reset(); return; }
+    if (elapsedTime == SECONDS_PER_ROUND) return;
     elapsedTime = Math.floor((Date.now() - startTime) / 1000);
 
 
-
-    if (87 in keysDown) { // Player is holding up key
+    if (38 in keysDown) { // Player is holding up key
         heroY -= 5;
     }
-    if (83 in keysDown) { // Player is holding down key
+    if (40 in keysDown) { // Player is holding down key
         heroY += 5;
     }
-    if (65 in keysDown) { // Player is holding left key
+    if (37 in keysDown) { // Player is holding left key
         heroX -= 5;
     }
-    if (68 in keysDown) { // Player is holding right key
+    if (39 in keysDown) { // Player is holding right key
         heroX += 5;
     }
 
@@ -377,8 +375,8 @@ let update = function() {
     ) {
         // Pick a new location for the monster.
         // Note: Change this to place the monster at a new, random location.
-        monsterX = Math.floor(Math.random() * (canvas.width - 32))
-        monsterY = Math.floor(Math.random() * (canvas.height - 32))
+        monsterX = Math.abs(Math.floor(Math.random() * canvas.width - 32));
+        monsterY = Math.abs(Math.floor(Math.random() * canvas.height - 32));
     }
 };
 

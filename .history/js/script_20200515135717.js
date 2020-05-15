@@ -341,17 +341,17 @@ let update = function() {
     elapsedTime = Math.floor((Date.now() - startTime) / 1000);
 
 
-
-    if (87 in keysDown) { // Player is holding up key
+    if (119 in keysDown) { // Player is holding up key
         heroY -= 5;
     }
-    if (83 in keysDown) { // Player is holding down key
+    if (115 in keysDown) { // Player is holding down key
         heroY += 5;
     }
-    if (65 in keysDown) { // Player is holding left key
+    if (97 in keysDown) { // Player is holding left key
         heroX -= 5;
     }
-    if (68 in keysDown) { // Player is holding right key
+    if (100 in keysDown) { // Player is holding right key
+        alert("aaaa")
         heroX += 5;
     }
 

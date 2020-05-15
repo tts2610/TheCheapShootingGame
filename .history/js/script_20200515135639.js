@@ -341,17 +341,17 @@ let update = function() {
     elapsedTime = Math.floor((Date.now() - startTime) / 1000);
 
 
-
-    if (87 in keysDown) { // Player is holding up key
+    if (119 in keysDown) { // Player is holding up key
         heroY -= 5;
     }
-    if (83 in keysDown) { // Player is holding down key
+    if (115 in keysDown) { // Player is holding down key
         heroY += 5;
     }
-    if (65 in keysDown) { // Player is holding left key
+    if (97 in keysDown) { // Player is holding left key
         heroX -= 5;
     }
-    if (68 in keysDown) { // Player is holding right key
+    if (100 in keysDown) { // Player is holding right key
+        alert("aaaa")
         heroX += 5;
     }
 
@@ -377,8 +377,8 @@ let update = function() {
     ) {
         // Pick a new location for the monster.
         // Note: Change this to place the monster at a new, random location.
-        monsterX = Math.floor(Math.random() * (canvas.width - 32))
-        monsterY = Math.floor(Math.random() * (canvas.height - 32))
+        monsterX = Math.abs(Math.floor(Math.random() * canvas.width - 32));
+        monsterY = Math.abs(Math.floor(Math.random() * canvas.height - 32));
     }
 };
 
