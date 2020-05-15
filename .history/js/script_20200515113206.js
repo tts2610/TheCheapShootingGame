@@ -1,5 +1,5 @@
 // FOR NEW GAME EFFECT
-let canvas = document.getElementById("myCanvas");
+let div = document.getElementById("myCanvas");
 let startGameBtn = document.getElementById("startGameBtn");
 
 // VARIABLE FOR CALCULATE
@@ -44,7 +44,7 @@ let prompts = { 1: "Too Low!", 2: "Too High!", 3: "You already input that number
 // });
 
 $(document).ready(function() {
-    canvas.style.display = "none";
+    div.style.display = "none";
     // input.disabled = true;
     // guessBtn.disabled = true;
     // resetBtn.disabled = true;
@@ -57,12 +57,10 @@ function startGame() {
         // secondRemaining.innerHTML = second;
         // timecounting();
         // guessRemaining.textContent = guess;
-    loadImages();
-    setupKeyboardListeners();
-    main();
     displayDiv();
-    // enableOrDisableBtn();
-    // autoFocus();
+    enableOrDisableBtn();
+    autoFocus();
+    alert("Random number revealed(for testing): " + randomNumber);
 }
 
 
@@ -147,11 +145,11 @@ function reset() {
 // }
 
 function displayDiv() {
-    if (canvas.style.display === "block" && startGameBtn.style.display === "none") {
-        canvas.style.display = "none";
+    if (div.style.display === "block" && startGameBtn.style.display === "none") {
+        div.style.display = "none";
         startGameBtn.style.display = "block";
     } else {
-        canvas.style.display = "block";
+        div.style.display = "block";
         startGameBtn.style.display = "none";
     }
 
@@ -251,156 +249,3 @@ function insertPreviousRecord() {
 // function autoFocus() {
 //     input.focus();
 // }
-
-
-// FOR THE GAME
-
-ctx = canvas.getContext("2d");
-canvas.width = 512;
-canvas.height = 480;
-
-let bgReady, heroReady, monsterReady;
-let bgImage, heroImage, monsterImage;
-
-let startTime = Date.now();
-const SECONDS_PER_ROUND = 30;
-let elapsedTime = 0;
-
-function loadImages() {
-    bgImage = new Image();
-    bgImage.onload = function() {
-        // show the background image
-        bgReady = true;
-    };
-    bgImage.src = "img/background.png";
-    heroImage = new Image();
-    heroImage.onload = function() {
-        // show the hero image
-        heroReady = true;
-    };
-    heroImage.src = "img/hero.png";
-
-    monsterImage = new Image();
-    monsterImage.onload = function() {
-        // show the monster image
-        monsterReady = true;
-    };
-    monsterImage.src = "img/monster.png";
-}
-
-/** 
- * Setting up our characters.
- * 
- * Note that heroX represents the X position of our hero.
- * heroY represents the Y position.
- * We'll need these values to know where to "draw" the hero.
- * 
- * The same applies to the monster.
- */
-
-let heroX = canvas.width / 2;
-let heroY = canvas.height / 2;
-
-let monsterX = 100;
-let monsterY = 100;
-
-/** 
- * Keyboard Listeners
- * You can safely ignore this part, for now. 
- * 
- * This is just to let JavaScript know when the user has pressed a key.
- */
-let keysDown = {};
-
-function setupKeyboardListeners() {
-    // Check for keys pressed where key represents the keycode captured
-    // For now, do not worry too much about what's happening here. 
-    addEventListener("keydown", function(key) {
-        keysDown[key.keyCode] = true;
-    }, false);
-
-    addEventListener("keyup", function(key) {
-        delete keysDown[key.keyCode];
-    }, false);
-}
-
-
-/**
- *  Update game objects - change player position based on key pressed
- *  and check to see if the monster has been caught!
- *  
- *  If you change the value of 5, the player will move at a different rate.
- */
-let update = function() {
-    // Update the time.
-    elapsedTime = Math.floor((Date.now() - startTime) / 1000);
-
-
-    if (38 in keysDown) { // Player is holding up key
-        heroY -= 5;
-    }
-    if (40 in keysDown) { // Player is holding down key
-        heroY += 5;
-    }
-    if (37 in keysDown) { // Player is holding left key
-        heroX -= 5;
-    }
-    if (39 in keysDown) { // Player is holding right key
-        heroX += 5;
-    }
-
-    if (heroX <= 0) {
-        heroX = canvas.width - 32;
-    } else if (heroX > canvas.width - 32) {
-        heroX = 0;
-    }
-
-    if (heroY < 0) {
-        heroY = canvas.height - 32;
-    } else if (heroY > canvas.height - 32) {
-        heroY = 0;
-    }
-
-    // Check if player and monster collided. Our images
-    // are about 32 pixels big.
-    if (
-        heroX <= (monsterX + 32) &&
-        monsterX <= (heroX + 32) &&
-        heroY <= (monsterY + 32) &&
-        monsterY <= (heroY + 32)
-    ) {
-        // Pick a new location for the monster.
-        // Note: Change this to place the monster at a new, random location.
-        monsterX = Math.abs(Math.floor(Math.random() * canvas.width - 32));
-        monsterY = Math.abs(Math.floor(Math.random() * canvas.height - 32));
-    }
-};
-
-/**
- * This function, render, runs as often as possible.
- */
-var render = function() {
-    if (bgReady) {
-        ctx.drawImage(bgImage, 0, 0);
-    }
-    if (heroReady) {
-        ctx.drawImage(heroImage, heroX, heroY);
-    }
-    if (monsterReady) {
-        ctx.drawImage(monsterImage, monsterX, monsterY);
-    }
-    ctx.fillText(`Seconds Remaining: ${SECONDS_PER_ROUND - elapsedTime}`, 20, 100);
-};
-
-/**
- * The main game loop. Most every game will have two distinct parts:
- * update (updates the state of the game, in this case our hero and monster)
- * render (based on the state of our game, draw the right things)
- */
-var main = function() {
-    update();
-    render();
-    // Request to do this again ASAP. This is a special method
-    // for web browsers. 
-    requestAnimationFrame(main);
-};

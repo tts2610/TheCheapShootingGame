@@ -349,15 +349,15 @@ let update = function() {
         heroX += 5;
     }
 
-    if (heroX <= 0) {
-        heroX = canvas.width - 32;
-    } else if (heroX > canvas.width - 32) {
-        heroX = 0;
-    }
+    // if (heroX <= 0) {
+    //     heroX = canvas.width - 32;
+    // } else if (heroX >= canvas.width - 32) {
+    //     heroX = 0;
+    // }
 
     if (heroY < 0) {
         heroY = canvas.height - 32;
-    } else if (heroY > canvas.height - 32) {
+    } else if (heroX > canvas.height - 32) {
         heroY = 0;
     }
 

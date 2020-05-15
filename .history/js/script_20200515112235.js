@@ -1,5 +1,15 @@
 // FOR NEW GAME EFFECT
-let canvas = document.getElementById("myCanvas");
+let div = document.getElementById("myCanvas");
+let ctx = canvas.getContext("2d");
+
+
+
+let bgReady, heroReady, monsterReady;
+let bgImage, heroImage, monsterImage;
+
+let startTime = Date.now();
+const SECONDS_PER_ROUND = 30;
+let elapsedTime = 0;
 let startGameBtn = document.getElementById("startGameBtn");
 
 // VARIABLE FOR CALCULATE
@@ -12,7 +22,7 @@ let randomNumber = Math.floor(Math.random() * 100) + 1;
 let timer;
 
 // USER INPUT
-// let input = document.getElementById("guessInput");
+let input = document.getElementById("guessInput");
 
 // LEFT BOXES
 let guessHistory = document.getElementById("guessHistory");
@@ -20,13 +30,13 @@ let ranking = document.getElementById("ranking");
 let previousRound = document.getElementById("previousRound");
 
 // RIGHT BOXES
-// let secondRemaining = document.getElementById("secondRemaining");
-// let guessRemaining = document.getElementById("guessRemaining");
-// let finalResult = document.getElementById("finalResult");
+let secondRemaining = document.getElementById("secondRemaining");
+let guessRemaining = document.getElementById("guessRemaining");
+let finalResult = document.getElementById("finalResult");
 
 // BUTTONS
-// let guessBtn = document.getElementById("guessBtn");
-// let resetBtn = document.getElementById("resetBtn");
+let guessBtn = document.getElementById("guessBtn");
+let resetBtn = document.getElementById("resetBtn");
 
 
 // TOASTER + TOASTER OUTPUT
@@ -37,42 +47,40 @@ let prompts = { 1: "Too Low!", 2: "Too High!", 3: "You already input that number
 // =========== MAIN ============ 
 
 // ENTER KEY PRESSED
-// $(document).keypress(function(e) {
-//     if (e.which == 13) {
-//         $("#guessBtn").click();
-//     }
-// });
+$(document).keypress(function(e) {
+    if (e.which == 13) {
+        $("#guessBtn").click();
+    }
+});
 
 $(document).ready(function() {
-    canvas.style.display = "none";
-    // input.disabled = true;
-    // guessBtn.disabled = true;
-    // resetBtn.disabled = true;
+    div.style.display = "none";
+    input.disabled = true;
+    guessBtn.disabled = true;
+    resetBtn.disabled = true;
 });
 
 // NEW-GAME BUTTON PRESSED
 function startGame() {
     window.scroll(0, 0);
     toaster.innerHTML = ""
-        // secondRemaining.innerHTML = second;
-        // timecounting();
-        // guessRemaining.textContent = guess;
-    loadImages();
-    setupKeyboardListeners();
-    main();
+    secondRemaining.innerHTML = second;
+    timecounting();
+    guessRemaining.textContent = guess;
     displayDiv();
-    // enableOrDisableBtn();
-    // autoFocus();
+    enableOrDisableBtn();
+    autoFocus();
+    alert("Random number revealed(for testing): " + randomNumber);
 }
 
 
 // GUESS BUTTON PRESSED
 function guessSubmit() {
-    // if (guessBtn.disabled) return;
-    // else if (input.value == '' && !guessBtn.disabled) {
-    //     createAlert(6);
-    //     return;
-    // }
+    if (guessBtn.disabled) return;
+    else if (input.value == '' && !guessBtn.disabled) {
+        createAlert(6);
+        return;
+    }
     let result = getResult();
     createAlert(result);
 
@@ -118,7 +126,7 @@ function guessSubmit() {
     }
 
     // clear after insert
-    // input.value = "";
+    input.value = "";
     autoFocus();
 }
 
@@ -133,25 +141,25 @@ function reset() {
 
 // =========EXTRA-FUNCTIONS=======
 
-// function enableOrDisableBtn() {
-//     if (!input.disabled && !guessBtn.disabled && !resetBtn.disabled) {
-//         input.disabled = true;
-//         guessBtn.disabled = true;
-//         resetBtn.disabled = true;
-//     } else {
-//         input.disabled = false;
-//         guessBtn.disabled = false;
-//         resetBtn.disabled = false;
-//     }
+function enableOrDisableBtn() {
+    if (!input.disabled && !guessBtn.disabled && !resetBtn.disabled) {
+        input.disabled = true;
+        guessBtn.disabled = true;
+        resetBtn.disabled = true;
+    } else {
+        input.disabled = false;
+        guessBtn.disabled = false;
+        resetBtn.disabled = false;
+    }
 
-// }
+}
 
 function displayDiv() {
-    if (canvas.style.display === "block" && startGameBtn.style.display === "none") {
-        canvas.style.display = "none";
+    if (div.style.display === "block" && startGameBtn.style.display === "none") {
+        div.style.display = "none";
         startGameBtn.style.display = "block";
     } else {
-        canvas.style.display = "block";
+        div.style.display = "block";
         startGameBtn.style.display = "none";
     }
 
@@ -166,45 +174,45 @@ function resetToDefault() {
     randomNumber = Math.floor(Math.random() * 100) + 1;
 }
 
-// function timecounting() {
-//     timer = setInterval(() => {
-//         if (second == 0) {
-//             previousRecord.push(["FAILED", guess, second]);
-//             clearInterval(timer);
-//             createAlert(4);
-//             reset();
-//             insertPreviousRecord();
-//             return;
-//         }
-//         second -= 1;
-//         secondRemaining.innerHTML = second + "s";
-//     }, 1000)
+function timecounting() {
+    timer = setInterval(() => {
+        if (second == 0) {
+            previousRecord.push(["FAILED", guess, second]);
+            clearInterval(timer);
+            createAlert(4);
+            reset();
+            insertPreviousRecord();
+            return;
+        }
+        second -= 1;
+        secondRemaining.innerHTML = second + "s";
+    }, 1000)
 
-// }
+}
 
-// function getResult() {
-//     let result = 0;
-//     if (historyBox.includes(input.value)) {
-//         result = 3;
-//     } else {
-//         historyBox.push(input.value);
-//         if (input.value == randomNumber) {
-//             bestScores.push({ guessRemain: guess, timeRemain: second });
-//             previousRecord.push(["SUCCEED", guess - 1, second])
-//             return 5;
-//         } else if (input.value < randomNumber) {
-//             result = 1;
-//         } else if (input.value > randomNumber) {
-//             result = 2;
-//         }
-//         guessRemaining.textContent = --guess;
-//         if (guess == 0) {
-//             result = 4;
-//             previousRecord.push(["FAILED", guess, second])
-//         }
-//     }
-//     return result;
-// }
+function getResult() {
+    let result = 0;
+    if (historyBox.includes(input.value)) {
+        result = 3;
+    } else {
+        historyBox.push(input.value);
+        if (input.value == randomNumber) {
+            bestScores.push({ guessRemain: guess, timeRemain: second });
+            previousRecord.push(["SUCCEED", guess - 1, second])
+            return 5;
+        } else if (input.value < randomNumber) {
+            result = 1;
+        } else if (input.value > randomNumber) {
+            result = 2;
+        }
+        guessRemaining.textContent = --guess;
+        if (guess == 0) {
+            result = 4;
+            previousRecord.push(["FAILED", guess, second])
+        }
+    }
+    return result;
+}
 
 
 function createAlert(alertType) {
@@ -248,23 +256,26 @@ function insertPreviousRecord() {
     previousRecord.reverse();
 }
 
-// function autoFocus() {
-//     input.focus();
-// }
+function autoFocus() {
+    input.focus();
+}
 
 
-// FOR THE GAME
 
-ctx = canvas.getContext("2d");
-canvas.width = 512;
-canvas.height = 480;
+// FOR THE CHEAP GAME
+/*
+  Code modified from:
+  http://www.lostdecadegames.com/how-to-make-a-simple-html5-canvas-game/
+  using graphics purchased from vectorstock.com
+*/
 
-let bgReady, heroReady, monsterReady;
-let bgImage, heroImage, monsterImage;
+/* Initialization.
+Here, we create and add our "canvas" to the page.
+We also load all of our images. 
+*/
 
-let startTime = Date.now();
-const SECONDS_PER_ROUND = 30;
-let elapsedTime = 0;
+
+
 
 function loadImages() {
     bgImage = new Image();
@@ -272,20 +283,20 @@ function loadImages() {
         // show the background image
         bgReady = true;
     };
-    bgImage.src = "img/background.png";
+    bgImage.src = "images/background.png";
     heroImage = new Image();
     heroImage.onload = function() {
         // show the hero image
         heroReady = true;
     };
-    heroImage.src = "img/hero.png";
+    heroImage.src = "images/hero.png";
 
     monsterImage = new Image();
     monsterImage.onload = function() {
         // show the monster image
         monsterReady = true;
     };
-    monsterImage.src = "img/monster.png";
+    monsterImage.src = "images/monster.png";
 }
 
 /** 
@@ -349,18 +360,6 @@ let update = function() {
         heroX += 5;
     }
 
-    if (heroX <= 0) {
-        heroX = canvas.width - 32;
-    } else if (heroX > canvas.width - 32) {
-        heroX = 0;
-    }
-
-    if (heroY < 0) {
-        heroY = canvas.height - 32;
-    } else if (heroY > canvas.height - 32) {
-        heroY = 0;
-    }
-
     // Check if player and monster collided. Our images
     // are about 32 pixels big.
     if (
@@ -371,8 +370,8 @@ let update = function() {
     ) {
         // Pick a new location for the monster.
         // Note: Change this to place the monster at a new, random location.
-        monsterX = Math.abs(Math.floor(Math.random() * canvas.width - 32));
-        monsterY = Math.abs(Math.floor(Math.random() * canvas.height - 32));
+        monsterX = monsterX + 50;
+        monsterY = monsterY + 70;
     }
 };
 
@@ -404,3 +403,13 @@ var main = function() {
     // for web browsers. 
     requestAnimationFrame(main);
 };
+
+// Cross-browser support for requestAnimationFrame.
+// Safely ignore this line. It's mostly here for people with old web browsers.
+var w = window;
+requestAnimationFrame = w.requestAnimationFrame || w.webkitRequestAnimationFrame || w.msRequestAnimationFrame || w.mozRequestAnimationFrame;
+
+// Let's play this game!
+loadImages();
+setupKeyboardListeners();
+main();

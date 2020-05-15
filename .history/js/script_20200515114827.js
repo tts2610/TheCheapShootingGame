@@ -57,9 +57,6 @@ function startGame() {
         // secondRemaining.innerHTML = second;
         // timecounting();
         // guessRemaining.textContent = guess;
-    loadImages();
-    setupKeyboardListeners();
-    main();
     displayDiv();
     // enableOrDisableBtn();
     // autoFocus();
@@ -256,8 +253,7 @@ function insertPreviousRecord() {
 // FOR THE GAME
 
 ctx = canvas.getContext("2d");
-canvas.width = 512;
-canvas.height = 480;
+
 
 let bgReady, heroReady, monsterReady;
 let bgImage, heroImage, monsterImage;
@@ -272,20 +268,20 @@ function loadImages() {
         // show the background image
         bgReady = true;
     };
-    bgImage.src = "img/background.png";
+    bgImage.src = "images/background.png";
     heroImage = new Image();
     heroImage.onload = function() {
         // show the hero image
         heroReady = true;
     };
-    heroImage.src = "img/hero.png";
+    heroImage.src = "images/hero.png";
 
     monsterImage = new Image();
     monsterImage.onload = function() {
         // show the monster image
         monsterReady = true;
     };
-    monsterImage.src = "img/monster.png";
+    monsterImage.src = "images/monster.png";
 }
 
 /** 
@@ -349,18 +345,6 @@ let update = function() {
         heroX += 5;
     }
 
-    if (heroX <= 0) {
-        heroX = canvas.width - 32;
-    } else if (heroX > canvas.width - 32) {
-        heroX = 0;
-    }
-
-    if (heroY < 0) {
-        heroY = canvas.height - 32;
-    } else if (heroY > canvas.height - 32) {
-        heroY = 0;
-    }
-
     // Check if player and monster collided. Our images
     // are about 32 pixels big.
     if (
@@ -371,8 +355,8 @@ let update = function() {
     ) {
         // Pick a new location for the monster.
         // Note: Change this to place the monster at a new, random location.
-        monsterX = Math.abs(Math.floor(Math.random() * canvas.width - 32));
-        monsterY = Math.abs(Math.floor(Math.random() * canvas.height - 32));
+        monsterX = monsterX + 50;
+        monsterY = monsterY + 70;
     }
 };
 

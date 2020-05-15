@@ -351,13 +351,13 @@ let update = function() {
 
     if (heroX <= 0) {
         heroX = canvas.width - 32;
-    } else if (heroX > canvas.width - 32) {
+    } else if (heroX >= canvas.width - 32) {
         heroX = 0;
     }
 
-    if (heroY < 0) {
+    if (heroY <= 0) {
         heroY = canvas.height - 32;
-    } else if (heroY > canvas.height - 32) {
+    } else if (heroX >= canvas.height - 32) {
         heroY = 0;
     }
 
@@ -371,8 +371,8 @@ let update = function() {
     ) {
         // Pick a new location for the monster.
         // Note: Change this to place the monster at a new, random location.
-        monsterX = Math.abs(Math.floor(Math.random() * canvas.width - 32));
-        monsterY = Math.abs(Math.floor(Math.random() * canvas.height - 32));
+        monsterX = math.abs(math.floor(math.random() * canvas.width - 32));
+        monsterY = math.abs(math.floor(math.random() * canvas.height - 32));
     }
 };
 
